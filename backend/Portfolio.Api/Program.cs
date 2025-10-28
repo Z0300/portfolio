@@ -20,6 +20,9 @@ var supabaseServiceRoleKey = Environment.GetEnvironmentVariable("SUPABASE_SERVIC
 var adminUserId = Environment.GetEnvironmentVariable("SUPABASE_ADMIN_USER_ID");
 var connectionString = Environment.GetEnvironmentVariable("DEFAULT_CONNECTION");
 
+var AllowedOrigins = Environment.GetEnvironmentVariable("ALLOWED_ORIGINS");
+
+
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
@@ -46,6 +49,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(AllowedOrigins!.Split(','))
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -64,6 +78,8 @@ app.MapEndpoints();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors("AllowFrontend");
 
 app.Run();
 

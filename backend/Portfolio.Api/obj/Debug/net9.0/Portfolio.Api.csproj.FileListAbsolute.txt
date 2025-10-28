@@ -152,3 +152,4 @@ C:\Projects\portfolio\backend\Portfolio.Api\bin\Debug\net9.0\Supabase.Storage.dl
 C:\Projects\portfolio\backend\Portfolio.Api\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Projects\portfolio\backend\Portfolio.Api\bin\Debug\net9.0\System.Reactive.dll
 C:\Projects\portfolio\backend\Portfolio.Api\bin\Debug\net9.0\Websocket.Client.dll
+C:\Projects\portfolio\backend\Portfolio.Api\obj\Debug\net9.0\Portfolio.Api.sourcelink.json

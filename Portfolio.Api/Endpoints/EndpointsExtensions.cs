@@ -1,6 +1,5 @@
 
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Portfolio.Api.Endpoints;
 

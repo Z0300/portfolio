@@ -8,8 +8,10 @@ namespace Portfolio.Api;
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<Project> Projects => Set<Project>();
+    public DbSet<CoreFeature> CoreFeatures => Set<CoreFeature>();
     public DbSet<WorkExperience> Experiences => Set<WorkExperience>();
-    public DbSet<Responsibility> ExperienceDescriptions => Set<Responsibility>();
+    public DbSet<Responsibility> Resposibilities => Set<Responsibility>();
+    public DbSet<About> About => Set<About>();
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {

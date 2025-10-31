@@ -6,16 +6,14 @@ namespace Portfolio.Api.Features.Experience;
 
 public static class GetExperiences
 {
-    public record ResponsibilityResponse(int Id, string Content);
-    public record ExperienceResponse(
+    public record Response(
         int Id,
+        string Company,
         string Role,
         DateTime StartDate,
         DateTime? EndDate,
         List<ResponsibilityResponse> Responsibilities);
-    public record Response(
-        string Company,
-        List<ExperienceResponse> Experiences);
+    public record ResponsibilityResponse(int Id, string Content);
     public class Endpoint : IEndpoint
     {
         public void MapEndpoint(IEndpointRouteBuilder app)
@@ -28,21 +26,18 @@ public static class GetExperiences
     {
         var groupedExperiences = await context.Experiences
             .Include(e => e.Responsibilities)
-            .OrderByDescending(e => e.StartDate)
+            .OrderByDescending(e => e.DateStarted)
             .AsNoTracking()
-            .GroupBy(e => e.Company)
-            .Select(g => new Response(
-                g.Key,
-                g.Select(e => new ExperienceResponse(
+            .Select(e => new Response(
                     e.Id,
+                    e.Company,
                     e.Role,
-                    e.StartDate,
-                    e.EndDate,
+                    e.DateStarted,
+                    e.DateEnded,
                     e.Responsibilities
                         .OrderBy(r => r.Id)
                         .Select(r => new ResponsibilityResponse(r.Id, r.Content))
                         .ToList()
-                )).ToList()
             ))
             .ToListAsync();
 

@@ -66,7 +66,8 @@ public static class CreateExperience
         {
             Company = request.Company,
             Role = request.Role,
-            StartDate = request.StartDate,
+            DateStarted = request.StartDate,
+            DateEnded = request.EndDate,
             Responsibilities = [.. request.Responsibilities.Select(r => new Responsibility { Content = r.Content })],
         };
 

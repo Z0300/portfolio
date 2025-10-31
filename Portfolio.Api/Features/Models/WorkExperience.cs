@@ -13,9 +13,9 @@ namespace Portfolio.Api.Features.Models
         public required string Role { get; set; }
 
         [Required]
-        public DateTime StartDate { get; set; }
+        public DateTime DateStarted { get; set; }
 
-        public DateTime? EndDate { get; set; }
+        public DateTime? DateEnded { get; set; }
         public List<Responsibility> Responsibilities { get; set; } = [];
     }
 }

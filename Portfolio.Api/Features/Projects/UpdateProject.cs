@@ -7,7 +7,8 @@ namespace Portfolio.Api.Features.Projects;
 
 public static class UpdateProject
 {
-    public record Request(string Title, string Description, string[] TechStack, string? RepoUrl);
+    public record Request(string Title, string Description, string[] TechStack, List<CoreFeatureRequest> CoreFeatures, string? RepositoryLink);
+    public record CoreFeatureRequest(string Feature);
     public record Response(int Id, string Title);
 
     public sealed class Validator : AbstractValidator<Request>
@@ -27,7 +28,7 @@ public static class UpdateProject
                 .Must(stack => stack.All(s => !string.IsNullOrWhiteSpace(s)))
                 .WithMessage("Each technology name must be non-empty.");
 
-            RuleFor(x => x.RepoUrl)
+            RuleFor(x => x.RepositoryLink)
                 .MaximumLength(255);
         }
     }
@@ -51,12 +52,13 @@ public static class UpdateProject
             return Results.NotFound(Result<Response>.Fail("Not found."));
         }
 
-        project.Title = request.Title;
+        project.Name = request.Title;
         project.Description = request.Description;
         project.TechStack = request.TechStack;
-        project.RepoUrl = request.RepoUrl;
+        project.RepositoryLink = request.RepositoryLink;
+        project.CoreFeatures = [.. request.CoreFeatures.Select(cf => new CoreFeature { Feature = cf.Feature })];
 
         await context.SaveChangesAsync();
-        return Results.Ok(Result<Response>.Ok(new Response(project.Id, project.Title), "Updated successfully."));
+        return Results.Ok(Result<Response>.Ok(new Response(project.Id, project.Name), "Updated successfully."));
     }
 }

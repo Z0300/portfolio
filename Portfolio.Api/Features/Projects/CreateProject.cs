@@ -8,7 +8,9 @@ namespace Portfolio.Api.Features.Projects;
 
 public class CreateProject
 {
-    public record Request(string Title, string Description, string[] TechStack);
+    public record Request(string Title, string Description, string[] TechStack, List<CoreFeatureRequest> CoreFeatures, string? RepositoryLink);
+
+    public record CoreFeatureRequest(string Feature);
     public record Response(int Id, string Title);
 
     public sealed class Validator : AbstractValidator<Request>
@@ -49,13 +51,20 @@ public class CreateProject
             return Results.BadRequest(Result<Response>.Fail("Validation failed."));
         }
 
-        var project = new Project { Title = request.Title, Description = request.Description, TechStack = request.TechStack };
+        var project = new Project
+        {
+            Name = request.Title,
+            Description = request.Description,
+            TechStack = request.TechStack,
+            CoreFeatures = [.. request.CoreFeatures.Select(cf => new CoreFeature { Feature = cf.Feature })],
+            RepositoryLink = request.RepositoryLink
+        };
 
         context.Projects.Add(project);
 
         await context.SaveChangesAsync();
 
-        var response = new Response(project.Id, project.Title);
+        var response = new Response(project.Id, project.Name);
 
         return Results.Ok(Result<Response>.Ok(response, "Successfully created."));
     }

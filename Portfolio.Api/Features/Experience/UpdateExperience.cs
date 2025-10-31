@@ -73,7 +73,7 @@ public class UpdateExperience
 
         experience.Company = request.Company;
         experience.Role = request.Role;
-        experience.StartDate = request.StartDate;
+        experience.DateStarted = request.StartDate;
 
 
         var existing = experience.Responsibilities;
@@ -85,7 +85,7 @@ public class UpdateExperience
             .ToList();
 
         if (toRemove.Count > 0)
-            context.ExperienceDescriptions.RemoveRange(toRemove);
+            context.Resposibilities.RemoveRange(toRemove);
 
 
         foreach (var existingResp in existing)

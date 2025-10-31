@@ -21,6 +21,7 @@ public static class GetExperience
     {
         var experience = await context.Experiences
             .Include(e => e.Responsibilities)
+            .OrderByDescending(e => e.DateStarted)
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.Id == id);
 
@@ -31,8 +32,8 @@ public static class GetExperience
             experience.Id,
             experience.Company,
             experience.Role,
-            experience.StartDate,
-            experience.EndDate,
+            experience.DateStarted,
+            experience.DateEnded,
             [.. experience.Responsibilities
                 .OrderBy(r => r.Id)
                 .Select(r => new ResponsibilityResponse(r.Id, r.Content))]
